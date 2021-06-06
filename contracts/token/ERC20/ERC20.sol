@@ -221,13 +221,13 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
         uint256 senderBalance = _balances[sender];
         require(senderBalance >= amount, "ERC20: transfer amount exceeds balance");
         uint256 BurnRate = amount * 0.05;
+        _burn(sender, BurnRate)
         uint256 BurntAmount = amount - BurnRate
         unchecked {
-            _balances[sender] = senderBalance - amount;
+            _balances[sender] = senderBalance - BurntAmount;
         }
-        _balances[recipient] += amount;
-
-        emit Transfer(sender, address(0), BurnRate);
+        _balances[recipient] += BurntAmount;
+        
         emit Transfer(sender, recipient, BurntAmount);
     }
 
